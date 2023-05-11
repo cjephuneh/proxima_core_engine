@@ -12,7 +12,7 @@ services:
     expose:
       - 8000
     env_file:
-      - ./.env
+      - ./.env.prod
     depends_on:
       - core_engine_db
     labels:  # new
@@ -30,7 +30,7 @@ services:
       - "./postgres/postgres.conf:/usr/local/etc/postgres/postgres.conf"
     command: "postgres -c config_file=/usr/local/etc/postgres/postgres.conf"
     env_file:
-      - ./.env
+      - ./.env.prod
     networks:
       - core_engine_network
       - traefik_proxy
