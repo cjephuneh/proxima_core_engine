@@ -15,6 +15,13 @@ ENV PYTHONUNBUFFERED 1
 # install psycopg2 dependencies
 RUN apk update \
     && apk add postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools
+# install dependencies
+RUN apk update \
+    && apk add --no-cache \
+       freetype-dev \
+       jpeg-dev \
+       openjpeg-dev \
+       zlib-dev
 
 # lint
 RUN pip install --upgrade pip
@@ -24,7 +31,11 @@ COPY . .
 
 # install dependencies
 COPY ./requirements.txt .
+# generate wheels
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+
+# install from wheels
+RUN pip install --no-cache-dir --no-index --find-links /usr/src/app/wheels -r requirements.txt
 
 
 #########
