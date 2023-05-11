@@ -15,13 +15,15 @@ ENV PYTHONUNBUFFERED 1
 # install psycopg2 dependencies
 RUN apk update \
     && apk add postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools
-# install dependencies
-RUN apk update \
-    && apk add --no-cache \
-       freetype-dev \
-       jpeg-dev \
-       openjpeg-dev \
-       zlib-dev
+
+RUN apk update && apk add --no-cache \
+    build-base \
+    freetype-dev \
+    jpeg-dev \
+    openjpeg-dev \
+    zlib-dev
+
+
 
 # lint
 RUN pip install --upgrade pip
