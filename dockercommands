@@ -1,0 +1,52 @@
+docker-compose -f docker-compose.prod.yml down -v
+sudo lsof -t -i tcp:80 -s tcp:listen | sudo xargs kill
+docker-compose -f docker-compose.prod.yml up -d
+sudo fuser 80/tcp
+docker-compose -f docker-compose.prod.yml build --no-cache
+docker-compose build  --no-cache
+
+docker-compose -f docker-compose.prod.yml build --no-cache
+docker-compose  build --no-cache
+docker-compose -f docker-compose.prod.yml up -d
+docker-compose up
+docker rm -f $(docker ps -qa)
+docker rmi -f $(docker images -aq)
+docker-compose -f docker-compose.prod.yml exec web python manage.py
+docker-compose -f docker-compose.prod.yml exec web python manage.py makemigrations
+
+docker-compose exec web python manage.py makemigrations
+
+docker-compose -f docker-compose.prod.yml exec web python manage.py migrate
+docker-compose -f docker-compose.prod.yml exec web python manage.py collectstatic
+docker-compose -f docker-compose.prod.yml logs web
+docker-compose -f docker-compose.prod.yml logs traefik
+docker-compose -f docker-compose.prod.yml build
+docker-compose -f docker-compose.prod.yml restart 
+docker system prune -a
+# Inspect volumes created
+$ docker volume inspect flask-docker-traefik_postgres_data
+# Pulling from git
+git pull https://github.com/MasomoMufti/systembackend
+MasomoMufti
+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
+ssh-add ~/.ssh/id_rsa
+
+# Setting DB
+DROP SCHEMA public CASCADE;
+CREATE SCHEMA public AUTHORIZATION dbadmin;
+GRANT ALL ON SCHEMA public TO dbadmin;
+GRANT ALL ON SCHEMA public TO dbadmin;
+COMMENT ON SCHEMA public IS 'standard public schema';
+
+curl "https://downloads.apache.org/kafka/3.3.1/kafka_2.12-3.3.1.tgz" -o ~/Downloads/kafka.tgz
+kafka-3.3.1-src
+
+https://downloads.apache.org/kafka/3.3.1/kafka_2.12-3.3.1.tgz
+
+kafka_2.12-3.3.1.tgz  
+kafka_2.12-3.3.1
+sudo mv kafka_2.12-3.3.1 /* /usr/local/kafka-server
+
+/usr/lib/jvm/java-11-openjdk-amd64/bin/java
+
+# NODes and swarms

@@ -1,0 +1,74 @@
+version: "3.8"
+
+services:
+  web:
+    build:
+      context: ./proxima_core_engine
+      dockerfile: Dockerfile
+    command: gunicorn proxima_core_engine.wsgi:application --bind 0.0.0.0:8000
+    volumes:
+      - static_volume:/home/app/web/staticfiles
+      - media_volume:/home/app/web/mediafiles
+    expose:
+      - 8000
+    env_file:
+      - ./.env
+    depends_on:
+      - core_engine_db
+    labels:  # new
+      - "traefik.enable=true"
+      - "traefik.http.routers.django.rule=Host(`core.proximaai.co`)"
+      - "traefik.http.routers.django.tls=true"
+      - "traefik.http.routers.django.tls.certresolver=letsencrypt"
+    networks:
+      - core_engine_network
+      - traefik_proxy
+
+  core_engine_db:
+    image: postgres:15.0-alpine
+    volumes:
+      - "./postgres/postgres.conf:/usr/local/etc/postgres/postgres.conf"
+    command: "postgres -c config_file=/usr/local/etc/postgres/postgres.conf"
+    env_file:
+      - ./.env
+    networks:
+      - core_engine_network
+      - traefik_proxy
+    ports:
+      - "5432:5432"
+
+  celery:
+    build: ./proxima_core_engine
+    command: celery -A proxima_core_engine worker --loglevel=info --logfile=logs/celery.log --beat --scheduler django_celery_beat.schedulers:DatabaseScheduler
+    volumes:
+      - ./proxima_core_engine:/usr/src/app
+    environment:
+      - DEBUG=1
+      - SECRET_KEY=dbaa1_i7%*3r9-=z-+_mz4r-!qeed@(-a_r(g@k8jo8y3r27%m
+      - DJANGO_ALLOWED_HOSTS=localhost 127.0.0.1 proxima-core-engine.proximaagents.com [::1]
+      - CELERY_BROKER=redis://redis:6379/0
+      - CELERY_BACKEND=redis://redis:6379/0
+    depends_on:
+      # - web
+      - redis
+    networks:
+      - core_engine_network
+
+  redis:
+    image: redis:7-alpine
+    networks:
+      - core_engine_network
+
+volumes:
+  postgres_data:
+  static_volume:
+  media_volume:
+
+
+#Docker Networks
+
+networks:
+  traefik_proxy:
+    external: true
+  core_engine_network:
+    internal: true

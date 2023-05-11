@@ -1,0 +1,24 @@
+# celery
+celerybeat-schedule
+celerybeat
+
+# python related
+*.pyc
+__pycache__
+
+*.log
+.sqlite3
+
+# static
+# static/
+
+# dev artifacts
+*.pyc
+.idea
+.vscode
+.fake_app
+.virtualenv
+
+# Env
+.env
+venv

@@ -1,0 +1,5 @@
+from .admin_profile import create_related_admin_profile
+
+from .client_profile import create_related_client_profile
+
+from .employee_profile import create_related_employee_profile
