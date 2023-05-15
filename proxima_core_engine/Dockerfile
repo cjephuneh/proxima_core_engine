@@ -15,7 +15,7 @@ ENV PYTHONUNBUFFERED 1
 # install psycopg2 dependencies
 RUN apk update \
     && apk add postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools
-
+RUN apk update && apk add --no-cache git ca-certificates
 RUN apk update && apk add --no-cache \
     build-base \
     freetype-dev \
@@ -64,6 +64,7 @@ WORKDIR $APP_HOME
 # install dependencies
 RUN apk update \
     && apk add postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools
+RUN apk update && apk add --no-cache git ca-certificates
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --upgrade pip
