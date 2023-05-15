@@ -138,4 +138,3 @@ whitenoise==6.4.0
 wrapt==1.15.0
 xhtml2pdf==0.2.9
 zope.interface==6.0
-git+https://github.com/openai/whisper.git
