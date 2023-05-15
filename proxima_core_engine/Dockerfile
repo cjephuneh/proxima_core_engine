@@ -35,7 +35,7 @@ COPY . .
 COPY ./requirements.txt .
 # generate wheels
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
-RUN pip install git+https://github.com/openai/whisper.git
+# RUN pip install git+https://github.com/openai/whisper.git
 # install from wheels
 RUN pip install --no-cache-dir --no-index --find-links /usr/src/app/wheels -r requirements.txt
 
@@ -65,7 +65,7 @@ WORKDIR $APP_HOME
 RUN apk update \
     && apk add postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools
 RUN apk update && apk add --no-cache git ca-certificates
-RUN pip install git+https://github.com/openai/whisper.git
+# RUN pip install git+https://github.com/openai/whisper.git
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --upgrade pip
