@@ -14,7 +14,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install psycopg2 dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools llvm-dev
+    && apk add python3 py3-pip postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools llvm-dev 
 RUN apk update && apk add --no-cache git ca-certificates
 RUN apk update && apk add --no-cache \
     build-base \
@@ -37,6 +37,7 @@ COPY . .
 COPY ./requirements.txt .
 # generate wheels
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
+RUN pip3 install numpy
 # RUN pip install git+https://github.com/openai/whisper.git
 # install from wheels
 RUN pip wheel --wheel-dir=/usr/src/app/wheels setuptools
@@ -66,7 +67,7 @@ WORKDIR $APP_HOME
 
 # install dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools llvm-dev
+    && apk add python3 py3-pip postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools llvm-dev 
 
 RUN apk update && apk add --no-cache git ca-certificates
 RUN pip install --no-cache-dir --upgrade setuptools
@@ -75,6 +76,7 @@ RUN pip install --no-cache-dir --upgrade setuptools
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --upgrade pip
+RUN pip3 install numpy
 RUN pip wheel --wheel-dir=/usr/src/app/wheels setuptools
 RUN pip install --no-cache /wheels/*
 
