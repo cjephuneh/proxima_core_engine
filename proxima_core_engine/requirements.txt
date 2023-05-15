@@ -51,6 +51,7 @@ funcy==1.18
 gunicorn==20.1.0
 html5lib==1.1
 huggingface-hub==0.13.3
+setuptools>=40.8.0
 hydra-core==1.0.7
 hyperlink==21.0.0
 idna==3.4
