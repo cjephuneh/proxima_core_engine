@@ -14,7 +14,7 @@ ENV PYTHONUNBUFFERED 1
 
 # install psycopg2 dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools
+    && apk add postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools llvm-dev
 RUN apk update && apk add --no-cache git ca-certificates
 RUN apk update && apk add --no-cache \
     build-base \
@@ -63,7 +63,8 @@ WORKDIR $APP_HOME
 
 # install dependencies
 RUN apk update \
-    && apk add postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools
+    && apk add postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools llvm-dev
+
 RUN apk update && apk add --no-cache git ca-certificates
 # RUN pip install git+https://github.com/openai/whisper.git
 COPY --from=builder /usr/src/app/wheels /wheels
