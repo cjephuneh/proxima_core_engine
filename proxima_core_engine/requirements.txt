@@ -126,7 +126,6 @@ tiktoken==0.3.3
 tinycss2==1.2.1
 tomli==2.0.1
 tqdm==4.65.0
-transformers==4.27.2
 Twisted==22.10.0
 txaio==23.1.1
 typing_extensions==4.5.0
