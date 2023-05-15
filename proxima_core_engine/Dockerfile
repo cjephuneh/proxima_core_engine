@@ -26,7 +26,6 @@ RUN apk update && apk add --no-cache \
 
 
 # lint
-RUN pip cache purge
 RUN pip install --upgrade pip
 RUN pip install flake8==3.9.2
 COPY . .
@@ -68,7 +67,6 @@ RUN apk update \
 RUN apk update && apk add --no-cache git ca-certificates
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
-RUN pip cache purge
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
