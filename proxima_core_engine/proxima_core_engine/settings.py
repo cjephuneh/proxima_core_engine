@@ -26,7 +26,7 @@ SECRET_KEY = os.getenv(
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True#os.getenv("DEBUG")
 
-ALLOWED_HOSTS = ('localhost', '127.0.0.1')#os.getenv("DJANGO_ALLOWED_HOSTS")
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'core.proximaai.co']
 
 
 # Application definition
