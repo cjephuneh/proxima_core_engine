@@ -75,7 +75,7 @@ networkx==3.0
 oauthlib==3.2.2
 omegaconf==2.0.6
 triton==2.0.0.post1
-openai-whisper @ git+https://github.com/openai/whisper.git@248b6cb124225dd263bb9bd32d060b6517e067f8
+openai-whisper==20230314
 openapi-codec==1.3.2
 oscrypto==1.3.0
 packaging==23.0
