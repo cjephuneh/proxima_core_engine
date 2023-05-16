@@ -34,8 +34,8 @@ services:
     networks:
       - core_engine_network
       - traefik_proxy
-    ports:
-      - "5432:5432"
+    # ports:
+    #   - "5432:5432"
 
   celery:
     build: ./proxima_core_engine
