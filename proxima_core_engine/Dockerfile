@@ -110,4 +110,4 @@ COPY . .
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt || true
 RUN pip install -r requirements.txt || true
 
-# CMD gunicorn proxima_core_engine.wsgi:application --bind 0.0.0.0:8000
+CMD gunicorn proxima_core_engine.wsgi:application --bind 0.0.0.0:8000
