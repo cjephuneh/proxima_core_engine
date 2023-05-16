@@ -49,7 +49,7 @@ FROM python:3.10.7-slim-buster
 
 # create directory for the app user
 RUN mkdir -p /home/app
-
+# 
 # create the app user
 # RUN addgroup --system app && adduser --system --group app
 
