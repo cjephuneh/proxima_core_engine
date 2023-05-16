@@ -97,17 +97,47 @@
 # # # run entrypoint.prod.sh
 # # # ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]
 
-FROM python:3.9.6-slim
+# FROM python:3.9.6-slim
 
-ENV PYTHONUNBUFFERED 1
-ENV PYTHONDONTWRITEBYTECODE 1
-ENV PORT 8000
+# ENV PYTHONUNBUFFERED 1
+# ENV PYTHONDONTWRITEBYTECODE 1
+# ENV PORT 8000
 
-WORKDIR  /app
+# WORKDIR  /app
 
+# COPY . .
+
+# RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt || true
+# RUN pip install -r requirements.txt || true
+
+# CMD gunicorn proxima_core_engine.wsgi:application --bind 0.0.0.0:8000
+
+
+
+FROM python:3.9-alpine
+
+WORKDIR /usr/src/app
+
+# Install system dependencies
+RUN apk --no-cache add \
+    gcc \
+    musl-dev \
+    libffi-dev \
+    openssl-dev \
+    libxml2 \
+    libxml2-dev \
+    libxslt \
+    libxslt-dev \
+    jpeg-dev \
+    zlib-dev \
+    curl \
+    git
+
+# Install Python dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir --find-links=/wheels -r requirements.txt
+
+# Copy the rest of your application files
 COPY . .
 
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt || true
-RUN pip install -r requirements.txt || true
-
-CMD gunicorn proxima_core_engine.wsgi:application --bind 0.0.0.0:8000
+# CMD ["python", "your_app.py"]
