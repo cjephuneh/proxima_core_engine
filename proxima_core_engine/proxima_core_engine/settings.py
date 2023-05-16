@@ -77,7 +77,9 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'proxima_core_engine.urls'
-
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
