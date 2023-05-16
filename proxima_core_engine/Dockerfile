@@ -13,7 +13,7 @@ ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
 # install psycopg2 dependencies
-RUN apk update \
+RUN apk update \ && apk upgrade \
     && apk add python3 py3-pip postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools llvm-dev 
 RUN apk update && apk add --no-cache git ca-certificates
 RUN apk update && apk add --no-cache \
@@ -66,7 +66,7 @@ RUN mkdir $APP_HOME/mediafiles
 WORKDIR $APP_HOME
 
 # install dependencies
-RUN apk update \
+RUN apk update \ && apk upgrade \
     && apk add python3 py3-pip postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools llvm-dev 
 
 RUN apk update && apk add --no-cache git ca-certificates
