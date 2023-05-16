@@ -43,7 +43,7 @@ RUN pip3 install numpy
 # RUN pip install git+https://github.com/openai/whisper.git
 # install from wheels
 RUN pip wheel --wheel-dir=/usr/src/app/wheels setuptools
-RUN pip install --no-cache-dir /usr/src/app/wheels -r requirements.txt
+RUN pip install --no-cache-dir --no-index --find-links=/usr/src/app/wheels -r requirements.txt --prefer-binary --ignore-installed
 
 
 #########
