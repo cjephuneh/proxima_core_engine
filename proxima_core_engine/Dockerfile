@@ -3,7 +3,7 @@
 ###########
 
 # pull official base image
-FROM python:3.9.6-alpine as builder
+FROM python:3.10.7-slim-buster as builder
 
 # set work directory
 WORKDIR /usr/src/app
@@ -12,112 +12,76 @@ WORKDIR /usr/src/app
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# install psycopg2 dependencies
-RUN apk update \ && apk upgrade \
-    && apk add python3 py3-pip postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools llvm-dev openssl-dev libxml2 libxml2-dev libxslt libxslt-dev \
-    jpeg-dev \
-    zlib-dev \
-    curl \
-    git \
-    build-base \
-    freetype-dev \
-    jpeg-dev \
-    openjpeg-dev \
-    zlib-dev
-
-RUN pip install --no-cache-dir --upgrade setuptools
-# RUN pip wheel --wheel-dir=/usr/src/app/wheels wheel
-
+# install system dependencies
+RUN apt-get update && \
+    apt-get install -y --no-install-recommends gcc build-essential
 
 # lint
+RUN python -m pip install -U pip
 RUN pip install --upgrade pip
-RUN pip install flake8==3.9.2
-COPY . .
-#RUN flake8 --ignore=E501,F401 .
+RUN apt-get -y update
+RUN apt-get -y install git
+RUN pip install ez_setup 
+RUN pip install flake8==5.0.4
+RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu --no-cache-dir
+RUN pip install git+https://github.com/PrithivirajDamodaran/Parrot_Paraphraser.git
 
-# install dependencies
+COPY . /usr/src/app/
+# RUN flake8 --ignore=E50RUN1,F401 .
+# install python dependencies
 COPY ./requirements.txt .
-# generate wheels
-RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
-RUN pip3 install numpy
-# RUN pip install git+https://github.com/openai/whisper.git
-# install from wheels
-RUN pip wheel --wheel-dir=/usr/src/app/wheels setuptools
-RUN pip install --no-cache-dir --no-index --find-links=/usr/src/app/wheels -r requirements.txt --prefer-binary --ignore-installed
 
+# RUN python3 -m nltk.downloader punkt
+# RUN python3 -m nltk.downloader wordnet
+
+# RUN chmod -R +rwx /usr/src/nltk_data
+# RUN chmod -R +rwx /use/src/root/nltk_data
+# RUN chmod +rwx /usr/src/nltk_data/corpora/cmudict.zip
+RUN  pip install fairseq
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /usr/src/app/wheels -r requirements.txt
 
 #########
 # FINAL #
 #########
 
 # pull official base image
-FROM python:3.9.6-alpine
+FROM python:3.10.7-slim-buster
 
 # create directory for the app user
 RUN mkdir -p /home/app
 
 # create the app user
-RUN addgroup -S app && adduser -S app -G app
+# RUN addgroup --system app && adduser --system --group app
 
 # create the appropriate directories
 ENV HOME=/home/app
-ENV APP_HOME=/home/app/web
+ENV APP_HOME=/home/app/app
 RUN mkdir $APP_HOME
-RUN mkdir $APP_HOME/staticfiles
-RUN mkdir $APP_HOME/mediafiles
 WORKDIR $APP_HOME
 
 # install dependencies
-RUN apk update \ && apk upgrade \
-    && apk add python3 py3-pip postgresql-dev gcc python3-dev musl-dev libc-dev libffi-dev py3-setuptools llvm-dev openssl-dev libxml2 libxml2-dev libxslt libxslt-dev \
-    jpeg-dev \
-    zlib-dev \
-    curl \
-    git \
-    build-base \
-    freetype-dev \
-    jpeg-dev \
-    openjpeg-dev \
-    zlib-dev
-
-RUN pip install --no-cache-dir --upgrade setuptools
-
-# RUN pip install git+https://github.com/openai/whisper.git
+RUN apt-get update && apt-get install -y --no-install-recommends netcat build-essential
+# RUN apt-get update && apt-get install -y --no-install-recommends netcat build-essential
+RUN pip install ez_setup 
+RUN python -m pip install -U pip
+RUN pip install --upgrade pip
+RUN apt-get -y update
+RUN apt-get -y install git
 COPY --from=builder /usr/src/app/wheels /wheels
 COPY --from=builder /usr/src/app/requirements.txt .
 RUN pip install --upgrade pip
-RUN pip3 install numpy
-RUN pip wheel --wheel-dir=/usr/src/app/wheels setuptools
 RUN pip install --no-cache /wheels/*
+RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu --no-cache-dir
+RUN  pip install fairseq
 
-# copy entrypoint.prod.sh
-# COPY ./entrypoint.prod.sh .
-# RUN sed -i 's/\r$//g'  $APP_HOME/entrypoint.sh
-# RUN chmod +x  $APP_HOME/entrypoint.sh
 
 # copy project
 COPY . $APP_HOME
 
 # chown all the files to the app user
-RUN chown -R app:app $APP_HOME
+# RUN chown -R app:app $APP_HOME
 
 # change to the app user
-USER app
+USER root
 
-# # run entrypoint.prod.sh
-# # ENTRYPOINT ["/home/app/web/entrypoint.prod.sh"]
-
-# FROM python:3.9.6-slim
-
-# ENV PYTHONUNBUFFERED 1
-# ENV PYTHONDONTWRITEBYTECODE 1
-# ENV PORT 8000
-
-# WORKDIR  /app
-
-# COPY . .
-
-# RUN pip wheel --no-cache-dir --no-deps --wheel-dir /app/wheels -r requirements.txt || true
-# RUN pip install -r requirements.txt || true
-
-# CMD gunicorn proxima_core_engine.wsgi:application --bind 0.0.0.0:8000
+# run entrypoint.prod.sh
