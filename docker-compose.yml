@@ -21,7 +21,7 @@ services:
       - "traefik.http.routers.django.tls=true"
       - "traefik.http.routers.django.tls.certresolver=letsencrypt"
     networks:
-      - core_engine_network
+      # - core_engine_network
       - traefik_proxy
 
   core_engine_db:
