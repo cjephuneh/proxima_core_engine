@@ -24,12 +24,23 @@ git clone git@github.com:Proximaagent/proxima-core-engine.git
 git clone https://github.com/Proximaagent/proxima-core-engine.git 
 ```
 
-### Start all services.
+
+### Build all images
+
+```
+docker-compose build --no-cache
+```
+
+```
+make dev-bash
+pip install -r ../requirements/private-local-dev.txt
+```
+
+### Start all images
 
 ```
 docker-compose up -d
 ```
-
 
 
 
