@@ -24,7 +24,7 @@ RUN apt-get -y install git
 RUN pip install ez_setup 
 RUN pip install flake8==5.0.4
 RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu --no-cache-dir
-RUN pip install git+https://github.com/PrithivirajDamodaran/Parrot_Paraphraser.git
+# RUN pip install git+https://github.com/PrithivirajDamodaran/Parrot_Paraphraser.git
 
 COPY . .
 # RUN flake8 --ignore=E50RUN1,F401 .
