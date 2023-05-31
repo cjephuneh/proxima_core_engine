@@ -50,7 +50,18 @@ class ChatView(APIView):
         Params:
         chat_id
         tenant_id
+        tenant_name
         """
+
+        # TODO 
+        # 1. When a client sends a request - first determine that they have a virtual 
+        # assistant that is enabled from their subscriptions
+        # 2. If the virtual assistant is present then check for the path from
+        # proxima gpt engine and send the request via that pipeline 
+        # 3. If a tenant has received a message from their client and they do not have
+        # a virtual agent then they will have to respond to that
+
+
         chat, created = save_tenant_client_chat(**request.data)
         if not chat:
             return Response(status=400)
@@ -72,14 +83,11 @@ class ChatView(APIView):
         """
         # Validate params args
         params = request.query_params
-        required_params = {
-            'chat_id': 'chat_id',
-        }
-        filters = get_filter_from_params(params, required_params, required=True)
-        if filters is None:
+        chat_id = params.get('chat_id')
+        if not chat_id:
             return Response(status=400)
 
-        chat_query = Chat.objects.prefetch_related('chat').filter(**filters)
+        chat_query = Chat.objects.filter(id=chat_id)
         delete_count, delete_type = chat_query.delete()
         response_data = {
             'count': delete_count,
@@ -87,6 +95,7 @@ class ChatView(APIView):
         }
 
         return Response(response_data, status=200)
+
     
 
 class VoiceNoteAPIView(APIView):

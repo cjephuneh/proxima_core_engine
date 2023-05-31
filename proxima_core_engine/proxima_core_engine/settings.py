@@ -110,7 +110,7 @@ DATABASES = {
         "NAME": os.getenv("POSTGRES_DB", 'proximacoreenginedb'),
         "USER": os.getenv("POSTGRES_USER", 'proximaadmin'),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", 'aTgLpUfKGhu'),
-        "HOST": 'core_engine_db',#os.getenv("DB_HOST", 'core_engine_db'),
+        "HOST": 'localhost',#os.getenv("DB_HOST", 'core_engine_db'),
         "PORT": os.getenv("DB_PORT", 5432),
     }
 }
@@ -157,7 +157,7 @@ USE_TZ = True
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-EMAIL_BACKEND = "django_ses.SESBackend"
+# EMAIL_BACKEND = "django_ses.SESBackend"
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATIC_URL = "/static/"
@@ -348,3 +348,20 @@ REST_AUTH = {
     'USE_JWT': False,
 
 }
+
+
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_USE_TLS = False
+# EMAIL_PORT = 465
+# EMAIL_USE_SSL = True
+# EMAIL_HOST_USER = 'your@djangoapp.com'
+# EMAIL_HOST_PASSWORD = 'your password'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'administrator@proximaai.co'
+EMAIL_HOST_PASSWORD = '@PaulFrank45'
+EMAIL_USE_TLS = True  # or False if not using TLS
+EMAIL_USE_SSL = False

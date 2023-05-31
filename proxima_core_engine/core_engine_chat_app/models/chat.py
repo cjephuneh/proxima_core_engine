@@ -26,7 +26,12 @@ class Chat(MetaDataBase):
                                 related_name='chat_owner', help_text="Display name of the client")
     client_satisfaction = models.BooleanField(default=False, null=True,
                                               help_text="Whether client is satisfied or not")
-    
+    # A tenant will be able to set whether a client should have virtual assistant enabled 
+    # if their package has that 
+    # If they don't have the virtual agent enabled then all their chats will by default
+    # have this disabled then when they switch all chats should default back to true
+    iva_enabled = models.BooleanField(default=True, 
+                                      help_text="Enable or disable whether the virtual assistant should talk to a client")
 
 
     def __str__(self):

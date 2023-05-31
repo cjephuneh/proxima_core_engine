@@ -1,10 +1,10 @@
 from django.db import connection
 from django.http import JsonResponse
-from django.views.generic import View
+from rest_framework.views import APIView
 from rest_framework import status
 from rest_framework.exceptions import NotFound
 
-class CountHourlyEscalatedIssues(View):
+class CountHourlyEscalatedIssues(APIView):
     def get(self, request):
         tenant = self.request.query_params.get('tenant')
 
