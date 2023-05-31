@@ -26,11 +26,11 @@ RUN pip install flake8==5.0.4
 RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu --no-cache-dir
 RUN pip install git+https://github.com/PrithivirajDamodaran/Parrot_Paraphraser.git
 
-COPY . /code/
+COPY . .
 # RUN flake8 --ignore=E50RUN1,F401 .
 # install python dependencies
-COPY ./requirements.txt .
-
+# COPY ./requirements.txt .
+#
 # RUN python3 -m nltk.downloader punkt
 # RUN python3 -m nltk.downloader wordnet
 
@@ -48,15 +48,13 @@ RUN pip wheel --no-cache-dir --no-deps --wheel-dir /code/wheels -r requirements.
 FROM python:3.10.7-slim-buster
 
 # create directory for the app user
-RUN mkdir -p /home/app
+# RUN mkdir -p /home/app
 
 # create the app user
 # RUN addgroup --system app && adduser --system --group app
 
 # create the appropriate directories
-ENV HOME=/home/app
-ENV APP_HOME=/home/app/app
-RUN mkdir $APP_HOME
+
 WORKDIR /code
 
 # install dependencies
@@ -69,6 +67,8 @@ RUN apt-get -y update
 RUN apt-get -y install git
 COPY --from=builder /code/wheels /wheels
 COPY --from=builder /code/requirements.txt .
+COPY --from=builder /code/private-local-dev.txt .
+
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu --no-cache-dir
