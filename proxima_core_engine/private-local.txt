@@ -1,1 +1,1 @@
--e /code/local_dev_packages/kafka-connect-api
+-e /code/local_dev_packages/ibl-kafka-connect-api
