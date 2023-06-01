@@ -33,6 +33,11 @@ class MessageView(APIView):
             'message_id': 'message_id',
             'chat_id': 'chat_id',
         }
+
+        # make sure chat_id is passed
+        if not params.get('chat_id'):
+            return Response({'error': 'chat_id missing'})
+        
         filters = get_filter_from_params(params, allowed_params)
 
         message = Message.objects.select_related('chat_id').filter(**filters)
@@ -50,14 +55,14 @@ class MessageView(APIView):
         chat_id
         """
         message, created = save_chat_message(**request.data)
-        if not message:
-            return Response(status=400)
+        if not created:
+            return Response({ 'error': 'Failed to create message' }, status=400)
         
         message_info = MessageSerializer(message)
         if created:
             return Response(message_info.data, status=201)
-        else:
-            return Response(message_info.data, status=200)
+        # else:
+        #     return Response(message_info.data, status=200)
 
 
     def delete(self, request, format=None):
@@ -77,7 +82,7 @@ class MessageView(APIView):
         }
         filters = get_filter_from_params(params, required_params, required=True)
         if filters is None:
-            return Response(status=400)
+            return Response({'error': 'Failed to delete chat'}, status=400)
 
         message_query = Message.objects.prefetch_related('message').filter(**filters)
         delete_count, delete_type = message_query.delete()
@@ -85,5 +90,8 @@ class MessageView(APIView):
             'count': delete_count,
             'type': delete_type
         }
+
+        if response_data['count'] == 0:
+            return Response({'error': 'Does not exist'})
 
         return Response(response_data, status=200)

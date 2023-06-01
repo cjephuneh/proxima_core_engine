@@ -24,8 +24,8 @@ from core_engine_chat_app.models import (
 
 @admin.register(Chat)
 class ChatAdmin(admin.ModelAdmin):
-    list_display = ('chat_id', 'tenant', 'guest_client', 'chat_owner')
-    raw_id_fields = ('tenant', 'chat_owner')
+    list_display = ('chat_id', 'tenant_id', 'guest_client', 'chat_owner')
+    raw_id_fields = ('tenant_id', 'chat_owner')
     # autocomplete_fields = ('skills',)
 
     search_fields = ('chat_id',)

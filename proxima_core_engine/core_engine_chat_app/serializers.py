@@ -20,7 +20,7 @@ class ChatSerializer(serializers.ModelSerializer):
     # )
     class Meta:
         model = Chat
-        fields = ('chat_id', 'tenant', 'guest_client', 'chat_owner', 'client_satisfaction')
+        fields = ('chat_id', 'tenant_id', 'guest_client', 'chat_owner', 'client_satisfaction')
         # read_only_fields = fields
 
 
