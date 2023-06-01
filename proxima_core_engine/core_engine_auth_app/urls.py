@@ -8,6 +8,7 @@ app_name="core_engine_auth_app"
 
 
 urlpatterns = [
+
     re_path(r'^api/auth/', include([
         # Signin
         re_path(r'^signin/$', LoginAPIView.as_view(), name='core_auth_signin'),
@@ -22,4 +23,5 @@ urlpatterns = [
         re_path(r'^activate_user/<str:uid>/<str:token>/<str:activation_key>/$', ActivateUserView.as_view(), name="core_auth_activate_user"),
         re_path(r'reset_password/<str:uid>/<str:token>/$', ResetPasswordView.as_view(), name="core_auth_reset0-password"),
     ]))
+    
 ]
