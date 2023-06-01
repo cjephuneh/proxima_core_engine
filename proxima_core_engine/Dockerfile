@@ -24,7 +24,7 @@ RUN apt-get -y install git
 RUN pip install ez_setup 
 RUN pip install flake8==5.0.4
 RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu --no-cache-dir
-# RUN pip install git+https://github.com/PrithivirajDamodaran/Parrot_Paraphraser.git
+RUN pip install git+https://github.com/Proximaagent/proxima-kafka-connect-api.git
 
 COPY . .
 # RUN flake8 --ignore=E50RUN1,F401 .
@@ -76,10 +76,12 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 RUN pip install -r private-local.txt
 RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu --no-cache-dir
+RUN pip install git+https://github.com/Proximaagent/proxima-kafka-connect-api.git
+
 RUN  pip install fairseq
 
 RUN touch ./private-local-dev.txt
-RUN pip install -r ./private-local-dev.txt
+# RUN pip install -r ./private-local-dev.txt
 
 # copy project
 COPY . .
