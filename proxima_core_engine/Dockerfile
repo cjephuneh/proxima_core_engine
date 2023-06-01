@@ -38,6 +38,7 @@ COPY . .
 # RUN chmod -R +rwx /use/src/root/nltk_data
 # RUN chmod +rwx /usr/src/nltk_data/corpora/cmudict.zip
 RUN  pip install fairseq
+COPY ./local_dev_packages /code/local_dev_packages
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /code/wheels -r requirements.txt
 
 #########
@@ -77,6 +78,8 @@ RUN pip install -r private-local.txt
 RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu --no-cache-dir
 RUN  pip install fairseq
 
+RUN touch ./private-local-dev.txt
+RUN pip install -r ./private-local-dev.txt
 
 # copy project
 COPY . .
