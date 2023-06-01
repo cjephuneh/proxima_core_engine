@@ -52,8 +52,8 @@ class MetadataView(APIView):
         tenant_id
         """
         metadata, created = save_tenant_metadata(**request.data)
-        if not Metadata:
-            return Response(status=400)
+        if not created:
+            return Response({'error': 'Creating tenant matadata failed'}, status=400)
         
         metadata_info = MetadataSerializer(metadata)
         if created:

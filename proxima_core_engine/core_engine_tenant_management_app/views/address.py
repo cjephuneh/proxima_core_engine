@@ -36,7 +36,7 @@ class AddressView(APIView):
         }
         filters = get_filter_from_params(params, allowed_params)
 
-        address_query = Address.objects.prefetch_related('address').filter(**filters)
+        address_query = Address.objects.prefetch_related('tenant_id').filter(**filters)
         address_set = AddressSerializer(address_query, many=True)
         return Response(address_set.data, status=200)
 
@@ -51,14 +51,14 @@ class AddressView(APIView):
         tenant_id
         """
         address, created = save_tenant_address(**request.data)
-        if not address:
-            return Response(status=400)
+        if not created:
+            return Response({'error': 'Failed to save tenant address'}, status=400)
         
         address_info = AddressSerializer(address)
         if created:
             return Response(address_info.data, status=201)
-        else:
-            return Response(address_info.data, status=200)
+        # else:
+        #     return Response(address_info.data, status=200)
 
 
     
