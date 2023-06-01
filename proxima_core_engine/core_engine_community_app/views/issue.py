@@ -52,6 +52,7 @@ class IssueView(APIView):
         community_id
         """
         issue, created = save_community_issue(**request.data)
+        print('issue', issue)
         if not issue:
             return Response(status=400)
         
@@ -59,5 +60,5 @@ class IssueView(APIView):
         if created:
             return Response(issue_info.data, status=201)
         else:
-            return Response(issue_info.data, status=200)
+            return Response(issue_info.data, status=400)
 
