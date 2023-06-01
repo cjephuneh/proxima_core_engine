@@ -68,11 +68,12 @@ RUN apt-get -y install git
 COPY --from=builder /code/wheels /wheels
 COPY --from=builder /code/requirements.txt .
 COPY --from=builder /code/private-local.txt .
+COPY --from=builder /code/local_dev_packages/ibl-kafka-connect-api .
 
 
 RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
-RUN pip install -r private-local.txt
+RUN pip install install --no-index --find-links -r private-local.txt
 RUN pip3 install torch torchvision torchaudio --extra-index-url https://download.pytorch.org/whl/cpu --no-cache-dir
 RUN  pip install fairseq
 
