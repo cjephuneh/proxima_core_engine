@@ -1,7 +1,7 @@
 import os
 
 import factory
-from .kafka_connect.connectors import BaseSource, BaseSourceConfig
+from kafka_connect.connectors import BaseSource, BaseSourceConfig
 
 _SOURCE_NAME = "core-engine"
 
