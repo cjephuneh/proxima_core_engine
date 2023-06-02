@@ -38,7 +38,7 @@ COPY . .
 # RUN chmod -R +rwx /use/src/root/nltk_data
 # RUN chmod +rwx /usr/src/nltk_data/corpora/cmudict.zip
 RUN  pip install fairseq
-COPY ./local_dev_packages /code/local_dev_packages
+# COPY ./local_dev_packages /code/local_dev_packages
 RUN pip wheel --no-cache-dir --no-deps --wheel-dir /code/wheels -r requirements.txt
 
 #########
@@ -69,7 +69,7 @@ RUN apt-get -y install git
 COPY --from=builder /code/wheels /wheels
 COPY --from=builder /code/requirements.txt .
 COPY --from=builder /code/private-local.txt .
-COPY --from=builder /code/local_dev_packages/ibl-kafka-connect-api .
+# COPY --from=builder /code/local_dev_packages/ibl-kafka-connect-api .
 
 
 RUN pip install --upgrade pip
