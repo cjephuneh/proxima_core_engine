@@ -42,14 +42,15 @@ def save_client_comment(**kwargs):
     
     comment = None
     try:
-        thread = kwargs.get('thread')
-        client = kwargs.get('client')
+        thread = kwargs.get('thread_id')
+        client = kwargs.get('client_id')
         # issue = kwargs.get('issue')
         comment_description = kwargs.get('comment_description')
         likes = kwargs.get('likes')
         dislikes = kwargs.get('dislikes')
 
-        comment, created = Comment.objects.get_or_create(
+        # comment, created = Comment.objects.get_or_create(
+        comment = Comment.objects.create(
             # comment_id=comment_id,
             thread=Thread.objects.get(thread_id=thread),
             client=Client.objects.get(id=client),
@@ -58,8 +59,10 @@ def save_client_comment(**kwargs):
             # dislikes=dislikes,
 
         )
+
+        created = True
         
-        comment.save()
+        # comment.save()
     except (IntegrityError, DatabaseError):
         log.error(
             "Comment save error: (comment_id: %s, thread: %s, client: %s)",
