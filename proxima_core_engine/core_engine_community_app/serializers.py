@@ -13,10 +13,11 @@ from core_engine_tenant_users_app.models import (
 class ClientLikesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Client
-        fields = ['username', 'email', 'first_name', 'last_name']
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
 
 class CommentSerializer(serializers.ModelSerializer):
     likes = ClientLikesSerializer(many=True)
+    client = ClientLikesSerializer(many=False)
     class Meta:
         model = Comment
         fields = ('comment_id', 'thread', 'client', 'comment_description', 'likes', 'dislikes')

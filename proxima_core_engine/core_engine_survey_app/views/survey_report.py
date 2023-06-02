@@ -31,6 +31,11 @@ class SurveyReportView(APIView):
         allowed_params = {
             'survey_id': 'survey_id',
         }
+
+        # make sure survey_id is provided
+        if not params.get('survey_id'):
+            return Response({'error': 'survey_id missing'}, status=400)
+        
         filters = get_filter_from_params(params, allowed_params)
 
         survey_report_query = SurveyReport.objects.select_related('survey_id').filter(**filters)
@@ -51,12 +56,12 @@ class SurveyReportView(APIView):
         survey_reporter
         """
         surveyreport, created = save_survey_report(**request.data)
-        if not surveyreport:
-            return Response(status=400)
+        if not created:
+            return Response({'error': 'Faled to create survey report'}, status=400)
         
         surveyreport_info = SurveyReportSerializer(surveyreport)
         if created:
             return Response(surveyreport_info.data, status=201)
-        else:
-            return Response(surveyreport_info.data, status=200)
+        # else:
+        #     return Response(surveyreport_info.data, status=200)
 

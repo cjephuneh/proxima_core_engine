@@ -37,7 +37,7 @@ class ResponseView(APIView):
         }
         filters = get_filter_from_params(params, allowed_params)
 
-        response_query = SurveyResponse.objects.select_related('survey_id').filter(**filters)
+        response_query = SurveyResponse.objects.prefetch_related('survey_id', 'client').filter(**filters)
         response_set = ResponseSerializer(response_query, many=True)
         return Response(response_set.data, status=200)
 
@@ -54,13 +54,13 @@ class ResponseView(APIView):
         survey_response
         """
         response, created = save_client_survey_response(**request.data)
-        if not response:
-            return Response(status=400)
+        if not created:
+            return Response({'error': 'Failed to capture response'}, status=400)
         
         response_info = ResponseSerializer(response)
         if created:
             return Response(response_info.data, status=201)
-        else:
-            return Response(response_info.data, status=200)
+        # else:
+        #     return Response(response_info.data, status=200)
 
 

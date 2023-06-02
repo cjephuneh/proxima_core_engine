@@ -21,7 +21,7 @@ class Survey(MetaDataBase):
     survey_questions = models.JSONField(null=True, blank=True,
                                         help_text="The survey questions")
     target_audience = models.ManyToManyField("core_engine_tenant_users_app.Client", blank=True,
-                                             help_text="The target audience")
+                                             help_text="The target audience/who to share with")
     survey_type = models.CharField(max_length=20, choices=SURVEY_TYPE, null=True, blank=True,
                                    help_text="The survey type")
     start_day = models.DateField(null=True, blank=True,

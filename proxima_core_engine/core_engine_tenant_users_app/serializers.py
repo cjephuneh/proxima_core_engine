@@ -54,7 +54,7 @@ class ClientSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Client
-        fields = ['username', 'email', 'first_name', 'last_name','phonenumber', 'gender','DOB', 'user_type', 'password', 'confirm_password','token' ]
+        fields = ['id','username', 'email', 'first_name', 'last_name','phonenumber', 'gender','DOB', 'user_type', 'password', 'confirm_password','token' ]
 
  
     def create(self, validated_data):
@@ -85,7 +85,7 @@ class EmployeeSerializer(serializers.ModelSerializer):
  
     class Meta:
         model = Employee
-        fields = ['username', 'email', 'first_name', 'last_name','phonenumber', 'gender','DOB', 'user_type','tenant_id', 'password', 'confirm_password','token' ]
+        fields = ['id', 'username', 'email', 'first_name', 'last_name','phonenumber', 'gender','DOB', 'user_type','tenant_id', 'password', 'confirm_password','token' ]
 
  
     def create(self, validated_data):

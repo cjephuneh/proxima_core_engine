@@ -42,7 +42,7 @@ class CommentView(APIView):
         
         filters = get_filter_from_params(params, allowed_params)
 
-        comment_query = Comment.objects.prefetch_related('thread', 'likes').filter(**filters)
+        comment_query = Comment.objects.prefetch_related('thread', 'likes', 'client').filter(**filters)
         comment_set = CommentSerializer(comment_query, many=True)
         return Response(comment_set.data, status=200)
 

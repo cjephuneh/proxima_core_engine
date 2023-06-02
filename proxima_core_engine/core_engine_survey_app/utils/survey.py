@@ -44,19 +44,28 @@ def save_tenant_survey(**kwargs):
         survey_context = kwargs.get('survey_context')
         survey_questions = kwargs.get('survey_questions')
         survey_type = kwargs.get('survey_type')
+        target_audience = kwargs.get('target_audience')
         start_day = kwargs.get('start_day')
         end_day = kwargs.get('end_day')
 
-        survey, created = Survey.objects.get_or_create(
+                # survey, created = Survey.objects.get_or_create(
+        survey = Survey.objects.create(
             tenant_id = Tenant.objects.get(tenant_id=tenant_id),
             survey_topic=survey_topic,
             survey_description=survey_description,
             survey_context=survey_context,
+            survey_questions=survey_questions,
             start_day=start_day,
             survey_type=survey_type,
             end_day=end_day,
-            # target_audience=Client.objects.filter(id_in=target_audience),
+            # target_audience=Client.objects.filter(id__in=target_audience),
         )
+        
+        # Set the target audience using set()
+        if target_audience:
+            survey.target_audience.set(target_audience)
+
+        created = True
         
         survey.save()
     except (IntegrityError, DatabaseError):
