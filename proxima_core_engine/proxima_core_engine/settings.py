@@ -167,7 +167,7 @@ STATICFILES_DIRS = [
 
 ENV_TYPE = os.getenv("ENV_TYPE", "dev")
 if ENV_TYPE == "dev":
-    DOMAIN_NAME = "localhost:8000"
+    # DOMAIN_NAME = "localhost:8000"
     # SESSION_COOKIE_DOMAIN = "localhost:8000"
 
     MEDIA_ROOT = os.path.join(BASE_DIR, "media")
@@ -268,7 +268,7 @@ LOGGING = {
 
 # APPLICATION_NAME = "bottlecrm"
 
-REDIS_URL = os.getenv('REDIS_URL', 'redis://localhost:6379')
+REDIS_URL = os.getenv('REDIS_URL', 'redis://redis:6379')
 
 CHANNEL_LAYERS = {
     'default': {

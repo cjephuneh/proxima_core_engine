@@ -10,6 +10,7 @@ DB_PASSWORD_ENV = "KAFKA_CONNECT_REPLICATOR_DB_PASSWORD"
 DB_NAME_ENV = "DB_DATABASE"
 DB_HOST_ENV = "DB_HOST"
 DB_PORT_ENV = "DB_PORT"
+TOPIC_PREFIX = "core-engine"
 
 
 class SourceConfig(BaseSourceConfig):
@@ -20,10 +21,11 @@ class SourceConfig(BaseSourceConfig):
     database_user = os.getenv(DB_USER_ENV)
     database_password = os.getenv(DB_PASSWORD_ENV)
     database_dbname = os.getenv(DB_NAME_ENV)
+    topic_prefix = TOPIC_PREFIX
 
 
 class Source(BaseSource):
-    """A Source Connector for data manager"""
+    """A Source Connector for core engine"""
 
     name: str = ""
     config = factory.SubFactory(SourceConfig)
