@@ -14,13 +14,22 @@ TOPIC_PREFIX = "core-engine"
 
 
 class SourceConfig(BaseSourceConfig):
+    # connector_class = "io.debezium.connector.postgresql.PostgresConnector"
+    # database_server_name = "core_engine_db"
+    # database_hostname = os.getenv(DB_HOST_ENV)
+    # database_port = os.getenv(DB_PORT_ENV)
+    # database_user = os.getenv(DB_USER_ENV)
+    # database_password = os.getenv(DB_PASSWORD_ENV)
+    # database_dbname = os.getenv(DB_NAME_ENV)
+    # topic_prefix = TOPIC_PREFIX
+
     connector_class = "io.debezium.connector.postgresql.PostgresConnector"
-    database_server_name = "core_engine_db"
-    database_hostname = os.getenv(DB_HOST_ENV)
-    database_port = os.getenv(DB_PORT_ENV)
-    database_user = os.getenv(DB_USER_ENV)
-    database_password = os.getenv(DB_PASSWORD_ENV)
-    database_dbname = os.getenv(DB_NAME_ENV)
+    database_server_name = "core-engine"
+    database_hostname = 'core_engine_db'#os.getenv(DB_HOST_ENV)
+    database_port = '5432'#os.getenv(DB_PORT_ENV)
+    database_user = 'proximaadmin'#os.getenv(DB_USER_ENV)
+    database_password = 'aTgLpUfKGhu'#os.getenv(DB_PASSWORD_ENV)
+    database_dbname = 'proximacoreenginedb'#os.getenv(DB_NAME_ENV)
     topic_prefix = TOPIC_PREFIX
 
 
