@@ -313,7 +313,9 @@ CORS_ORIGIN_WHITELIST = [
     'http://google.com',
     'http://hostname.example.com',
     'http://localhost:8000',
-    'http://127.0.0.1:9000'
+    'http://127.0.0.1:9000',
+    'https://app.proximaai.co',
+
 ]
 SECURE_HSTS_SECONDS = 3600
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
