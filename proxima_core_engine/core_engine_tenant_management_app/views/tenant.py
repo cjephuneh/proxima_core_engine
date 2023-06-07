@@ -35,7 +35,7 @@ class TenantView(APIView):
         }
         filters = get_filter_from_params(params, allowed_params)
 
-        tenant_query = Tenant.objects.prefetch_related('tenant').filter(**filters)
+        tenant_query = Tenant.objects.filter(**filters)
         tenant_set = TenantSerializer(tenant_query, many=True)
         return Response(tenant_set.data, status=200)
 
@@ -47,17 +47,19 @@ class TenantView(APIView):
 
         Params:
         tenant_id
-        name (optional)
+        tenant_name (optional)
         """
         tenant, created = save_tenant(**request.data)
-        if not tenant:
-            return Response(status=400)
+        # if not tenant:
+        if not created: # return if the tenant was not created -> maybe because the name already exists in the DB
+            return Response({ "error": "Tenant name already registered"}, status=400)
         
         tenant_info = TenantSerializer(tenant)
         if created:
             return Response(tenant_info.data, status=201)
-        else:
-            return Response(tenant_info.data, status=200)
+        # this is not needed since we're already catching the create failure
+        # else:
+        #     return Response(tenant_info.data, status=200)
 
 
     def delete(self, request, format=None):
@@ -67,23 +69,27 @@ class TenantView(APIView):
 
         Params (all required):
         tenant_id
-        tenant_name
+        tenant_name (optional)
         """
         # Validate params args
         params = request.query_params
         required_params = {
-            'tenant_id': 'course_id',
-            'org': 'tenant_name'
+            'tenant_id': 'tenant_id',
+            'tenant_name': 'tenant_name'
         }
-        filters = get_filter_from_params(params, required_params, required=True)
+        filters = get_filter_from_params(params, required_params)
+        print(filters)
         if filters is None:
-            return Response(status=400)
+            return Response({"error": "You need to pass the tenant_id"}, status=400)
 
-        tenant_query = Tenant.objects.prefetch_related('tenant').filter(**filters)
+        tenant_query = Tenant.objects.filter(**filters)
         delete_count, delete_type = tenant_query.delete()
         response_data = {
             'count': delete_count,
             'type': delete_type
         }
+
+        if response_data['count'] == 0:
+            return Response({ "error": "Tenant does not exist" }, status=400)
 
         return Response(response_data, status=200)

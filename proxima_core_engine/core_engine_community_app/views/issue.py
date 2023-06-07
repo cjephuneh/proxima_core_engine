@@ -35,6 +35,11 @@ class IssueView(APIView):
             'community_id': 'community_id',
             'client_id': 'client_id'
         }
+
+        # ensure the community_id is provided
+        if not params.get('community_id'):
+            return Response({ 'error': 'community_id missing' }, status=400)
+
         filters = get_filter_from_params(params, allowed_params)
 
         issue_query = Issue.objects.select_related('community_id').filter(**filters)
@@ -52,12 +57,13 @@ class IssueView(APIView):
         community_id
         """
         issue, created = save_community_issue(**request.data)
-        if not issue:
-            return Response(status=400)
+        print(issue, created)
+        if not created:
+            return Response({"error": "Failed to create issue"}, status=400)
         
         issue_info = IssueSerializer(issue)
         if created:
             return Response(issue_info.data, status=201)
         else:
-            return Response(issue_info.data, status=200)
+            return Response(issue_info.data, status=400)
 

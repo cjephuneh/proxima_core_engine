@@ -45,18 +45,22 @@ def save_tenant_address(**kwargs):
         state = kwargs.get('state')
         payment_number = kwargs.get('payment_number')
 
+        try:
+            tenant = Tenant.objects.get(tenant_id=tenant_id)
+        except Tenant.DoesNotExist:
+            log.error("Invalid tenant_id: %s", tenant_id)
+            return None, False
 
         address, created = Address.objects.get_or_create(
-            tenant_id=Tenant.objects.get(tenant_id=tenant_id),
+            tenant_id=tenant,
             billing_details_id=billing_details_id, 
             city=city,
             country=country,
             postal_code=postal_code, 
             state=state,
             payment_number=payment_number, 
-
         )        
-        
+    
         address.save()
     except (IntegrityError, DatabaseError):
         log.error(
@@ -64,5 +68,6 @@ def save_tenant_address(**kwargs):
             billing_details_id, tenant_id, billing_details_id
         )
         return None, False
+
     
     return address, created

@@ -6,12 +6,23 @@ from core_engine_survey_app.models import (
 
 )
 
+from core_engine_tenant_users_app.models import (
+    Client
+)
+
 # Response serializers
 
+# survey target audience serializer
+class TargetAudienceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = ['id', 'username', 'email', 'first_name', 'last_name','phonenumber', 'gender','DOB']
+
 class SurveySerializer(serializers.ModelSerializer):
-    tenant_id = serializers.CharField(
-        source='core_engine_tenant_management_app.tenant', default=None
-    )
+    # tenant_id = serializers.CharField(
+    #     source='core_engine_tenant_management_app.tenant', default=None
+    # )
+    target_audience = TargetAudienceSerializer(many=True)
 
     class Meta:
         model = Survey
@@ -24,12 +35,13 @@ class SurveySerializer(serializers.ModelSerializer):
 
 class ResponseSerializer(serializers.ModelSerializer):
 
-    survey_id = serializers.CharField(
-        source='core_engine_survey_app.survey', default=None
-    )
-    client = serializers.CharField(
-        source='core_engine_tenant_users_app.client', default=None
-    )
+    # survey_id = serializers.CharField(
+    #     source='core_engine_survey_app.survey', default=None
+    # )
+    # client = serializers.CharField(
+    #     source='core_engine_tenant_users_app.client', default=None
+    # )
+    client = TargetAudienceSerializer(many=False)
     class Meta:
         model = Response
         fields = ('response_id', 'survey_id', 'client', 'survey_response')
@@ -51,12 +63,12 @@ class SurveySubGroupsSerializer(serializers.ModelSerializer):
 
 class SurveyReportSerializer(serializers.ModelSerializer):
 
-    survey_id = serializers.CharField(
-        source='core_engine_survey_app.survey', default=None
-    )
-    survey_reporter = serializers.CharField(
-        source='core_engine_tenant_users_app.employee', default=None
-    )
+    # survey_id = serializers.CharField(
+    #     source='core_engine_survey_app.survey', default=None
+    # )
+    # survey_reporter = serializers.CharField(
+    #     source='core_engine_tenant_users_app.employee', default=None
+    # )
     class Meta:
         model = SurveyReport
         fields = ('survey_report_id', 'survey_id', 'conclusion', 'survey_success', 'survey_reporter')

@@ -33,11 +33,17 @@ class SurveyView(APIView):
             'survey_id': 'survey_id',
             'tenant_id': 'tenant_id'
         }
+
+        # make sure tenant_id is passed
+        if not params.get('tenant_id'):
+            return Response({"error": "tenant_id missing"}, status=400)
+
         filters = get_filter_from_params(params, allowed_params)
 
-        survey_query = Survey.objects.select_related('tenant_id').filter(**filters)
+        survey_query = Survey.objects.prefetch_related('tenant_id', 'target_audience').filter(**filters)
         survey_set = SurveySerializer(survey_query, many=True)
-        return Response(survey_set.data, status=200)
+        response = {'error': False, 'data': survey_set.data}
+        return Response(response, status=200)
 
 
     def post(self, request, format=None):
@@ -55,12 +61,12 @@ class SurveyView(APIView):
         target_audience
         """
         survey, created = save_tenant_survey(**request.data)
-        if not survey:
-            return Response(status=400)
+        if not created:
+            return Response({'error': 'Failed to create survey'},status=400)
         
         survey_info = SurveySerializer(survey)
         if created:
             return Response(survey_info.data, status=201)
-        else:
-            return Response(survey_info.data, status=200)
+        # else:
+        #     return Response(survey_info.data, status=200)
 

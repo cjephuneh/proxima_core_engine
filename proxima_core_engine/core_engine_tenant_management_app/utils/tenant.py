@@ -59,5 +59,6 @@ def save_tenant(**kwargs):
             tenant_name, tenant_name
         )
         return None, False
+    print(tenant, created)
     
     return tenant, created

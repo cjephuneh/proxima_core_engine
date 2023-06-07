@@ -110,7 +110,7 @@ DATABASES = {
         "NAME": os.getenv("POSTGRES_DB", 'proximacoreenginedb'),
         "USER": os.getenv("POSTGRES_USER", 'proximaadmin'),
         "PASSWORD": os.getenv("POSTGRES_PASSWORD", 'aTgLpUfKGhu'),
-        "HOST": 'core_engine_db',#os.getenv("DB_HOST", 'core_engine_db'),
+        "HOST": 'localhost',#os.getenv("DB_HOST", 'core_engine_db'),
         "PORT": os.getenv("DB_PORT", 5432),
     }
 }

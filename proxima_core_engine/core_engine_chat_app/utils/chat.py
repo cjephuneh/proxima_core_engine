@@ -28,34 +28,49 @@ def get_chat_from_id(chat_id):
 ### Save methods
 def save_tenant_client_chat(**kwargs):
     """
-    Create or update chat  instance
+    Create or update chat instance
     
     Return:
     chat (None if fail)
     created
     """
-    # if not chat_id:
-    #     return None, False
-    
     chat = None
     try:
-        tenant = kwargs.get('tenant')
-        guest_client = kwargs.get('guest_client')
-        chat_owner = kwargs.get('chat_owner')
+        tenant_id = kwargs.get('tenant_id')
+        guest_client_id = kwargs.get('guest_client')
+        chat_owner_id = kwargs.get('chat_owner')
         client_satisfaction = kwargs.get('client_satisfaction')
+        
+        try:
+            tenant = Tenant.objects.get(tenant_id=tenant_id)
+        except Tenant.DoesNotExist:
+            log.error("Invalid tenant_id: %s", tenant_id)
+            return None, False
+        
+        try:
+            guest_client = Client.objects.get(id=guest_client_id)
+        except Client.DoesNotExist:
+            log.error("Invalid guest_client id: %s", guest_client_id)
+            return None, False
+        
+        try:
+            chat_owner = Client.objects.get(id=chat_owner_id)
+        except Client.DoesNotExist:
+            log.error("Invalid chat_owner id: %s", chat_owner_id)
+            return None, False
+        
         chat, created = Chat.objects.get_or_create(
-            # chat_id=chat_id,
-            tenant=Tenant.objects.get(tenant_id=tenant),
-            guest_client=Client.objects.get(id=guest_client),
-            chat_owner=Client.objects.get(id=chat_owner),
+            tenant_id=tenant,
+            guest_client=guest_client,
+            chat_owner=chat_owner,
             client_satisfaction=client_satisfaction
         )
         
         chat.save()
     except (IntegrityError, DatabaseError):
         log.error(
-            "Chat save error: (Chat ID: %s, Chat tenant: %s, Chat Client: %s)",
-            chat_owner, tenant, chat_owner
+            "Chat save error: (Chat tenant: %s, Chat guest_client: %s, Chat chat_owner: %s)",
+            tenant_id, guest_client_id, chat_owner_id
         )
         return None, False
     

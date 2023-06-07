@@ -34,9 +34,15 @@ class ProductView(APIView):
             'product_id': 'product_id',
             'tenant_id': 'tenant_id',
         }
+        
+        # Make sure the tenant_id is passed
+        if not request.query_params.get('tenant_id'):
+            return Response({ "error": "You need to provide the tenant_id" }, status=400)
+        
+        
         filters = get_filter_from_params(params, allowed_params)
 
-        product_query = Product.objects.prefetch_related('tenant').filter(**filters)
+        product_query = Product.objects.prefetch_related('tenant_id').filter(**filters)
         product_set = ProductSerializer(product_query, many=True)
         return Response(product_set.data, status=200)
 
@@ -54,14 +60,15 @@ class ProductView(APIView):
         price
         """
         product, created = save_tenant_product(**request.data)
-        if not product:
-            return Response(status=400)
+        # if not product:
+        if not created:
+            return Response({"error": "Product not created. Make sure the product name is unique"}, status=400)
         
         product_info = ProductSerializer(product)
         if created:
             return Response(product_info.data, status=201)
-        else:
-            return Response(product_info.data, status=200)
+        # else:
+        #     return Response(product_info.data, status=200)
 
 
     def delete(self, request, format=None):
@@ -82,9 +89,13 @@ class ProductView(APIView):
 
         product_query = Product.objects.prefetch_related('tenant').filter(**filters)
         delete_count, delete_type = product_query.delete()
+        
         response_data = {
             'count': delete_count,
             'type': delete_type
         }
+
+        if response_data['count'] == 0:
+            return Response({ "error": "Product does not exist" }, status=400)
 
         return Response(response_data, status=200)

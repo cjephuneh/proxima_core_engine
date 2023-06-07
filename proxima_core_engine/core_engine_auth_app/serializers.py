@@ -12,8 +12,8 @@ class UserLoginSerializer(serializers.Serializer):
     email = serializers.CharField(max_length=255)
     password = serializers.CharField(max_length=128, write_only=True)
     token = serializers.CharField(max_length=255, read_only=True)
-    user_type = serializers.CharField(max_length=255, read_only=True)
-
+    # user_type = serializers.CharField(max_length=255, read_only=True)
+    user_type = serializers.ChoiceField(choices=[("Admin", "Admin"), ("Employee", "Employee"), ("Client", "Client")], read_only=True)
  
     def validate(self, data):
         # The `validate` method is where we make sure that the current
@@ -44,6 +44,7 @@ class UserLoginSerializer(serializers.Serializer):
         # model we set `USERNAME_FIELD` as `email`.
         user = authenticate(username=email, password=password)
         #user_type = User(user_type=user.user_type)
+
 
  
         # If no user was found matching this email/password combination then
@@ -90,6 +91,11 @@ class UserLoginSerializer(serializers.Serializer):
             raise serializers.ValidationError(
                 'This user has been deactivated.'
             )
+
+        if userObj is not None:
+            user_type = userObj.user_type
+        else:
+            user_type = None
  
         # The `validate` method should return a dictionary of validated data.
         # This is the data that is passed to the `create` and `update` methods
@@ -100,7 +106,6 @@ class UserLoginSerializer(serializers.Serializer):
             'email': user.email,
             'token': user.token,
             'user_type': user_type
-
         }
 
 class CheckTokenSerializer(serializers.Serializer):

@@ -49,7 +49,7 @@ def save_community_issue(**kwargs):
         description = kwargs.get('description')
         solved = kwargs.get('solved')
 
-        issue, created = Issue.objects.get_or_create(
+        issue = Issue.objects.create(
             # issue_id=issue_id,
             client_id=Client.objects.get(id=client_id),
             issue=issue,
@@ -58,13 +58,17 @@ def save_community_issue(**kwargs):
             solved=solved,
 
         )
+
+        created = True
         
-        issue.save()
+        # issue.save()
     except (IntegrityError, DatabaseError):
         log.error(
             "Issue save error: (Anonymous user ID: %s, client_id: %s, issue: %s)",
             client_id, client_id, issue
         )
         return None, False
+
+    # print(issue, created)
     
     return issue, created

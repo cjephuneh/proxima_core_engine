@@ -32,12 +32,12 @@ class ChatView(APIView):
         params = request.query_params
         allowed_params = {
             'chat_id': 'chat_id',
-            'tenant': 'tenant',
+            'tenant_id': 'tenant_id',
             'chat_owner': 'chat_owner'
         }
         filters = get_filter_from_params(params, allowed_params)
 
-        chat_query = Chat.objects.select_related('tenant').filter(**filters)
+        chat_query = Chat.objects.prefetch_related('tenant_id').filter(**filters)
         chat_set = ChatSerializer(chat_query, many=True)
         return Response(chat_set.data, status=200)
 
@@ -63,8 +63,11 @@ class ChatView(APIView):
 
 
         chat, created = save_tenant_client_chat(**request.data)
-        if not chat:
-            return Response(status=400)
+        if not created and chat:
+            return Response({ 'error': 'Chat already exists' }, status=400)
+        
+        if not created:
+            return Response({'error': 'Failed to create chat'}, status=400)
         
         chat_info = ChatSerializer(chat)
         if created:
@@ -85,14 +88,17 @@ class ChatView(APIView):
         params = request.query_params
         chat_id = params.get('chat_id')
         if not chat_id:
-            return Response(status=400)
+            return Response({'error': 'Missing chat_id'}, status=400)
 
-        chat_query = Chat.objects.filter(id=chat_id)
+        chat_query = Chat.objects.filter(chat_id=chat_id)
         delete_count, delete_type = chat_query.delete()
         response_data = {
             'count': delete_count,
             'type': delete_type
         }
+
+        if response_data['count'] == 0:
+            return Response({'error': 'Does not exist'}, status=400)
 
         return Response(response_data, status=200)
 

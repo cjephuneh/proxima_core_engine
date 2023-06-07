@@ -18,7 +18,7 @@ class Chat(MetaDataBase):
     """    
     chat_id = models.AutoField(primary_key=True,
                                 help_text="The chat ID UUID for an instance of a chat.")
-    tenant = models.ForeignKey("core_engine_tenant_management_app.Tenant", on_delete=models.CASCADE,
+    tenant_id = models.ForeignKey("core_engine_tenant_management_app.Tenant", on_delete=models.CASCADE,
                                 help_text="Display name of the tenant")
     guest_client = models.ForeignKey("core_engine_tenant_users_app.Client", on_delete=models.CASCADE,
                                      related_name='guest_client', help_text="Invited participant in the chat", null=True, blank=True)

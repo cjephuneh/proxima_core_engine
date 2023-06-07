@@ -31,7 +31,7 @@ class ThreadView(APIView):
         params = request.query_params
         allowed_params = {
             'thread_id': 'thread_id',
-            'issue': 'issue',
+            'issue_id': 'issue_id',
         }
         filters = get_filter_from_params(params, allowed_params)
 
