@@ -68,12 +68,12 @@ class CommunityView(APIView):
         }
         filters = get_filter_from_params(params, allowed_params)
 
-        community_query = Community.objects.select_related('tenant_id').filter(**filters)
+        community_query = Community.objects.prefetch_related('tenant_id').filter(**filters)
 
         # Include member details using prefetch_related
-        community_query = community_query.prefetch_related(
-            Prefetch('members', queryset=Client.objects.all())
-        )
+        # community_query = community_query.prefetch_related(
+        #     Prefetch('members', queryset=Client.objects.all())
+        # )
 
         community_set = CommunitySerializer(community_query, many=True)
         return Response(community_set.data, status=200)

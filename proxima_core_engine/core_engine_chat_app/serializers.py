@@ -3,10 +3,18 @@ from rest_framework import serializers
 
 from core_engine_chat_app.models import (
     Chat, ClientChats, Message, TenantChats
-
 )
 
+from core_engine_tenant_management_app.models import (
+    Tenant
+)
 # Chat serializers
+
+class TenantInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tenant
+        fields = ['tenant_id', 'tenant_name']
+
 
 class ChatSerializer(serializers.ModelSerializer):
     # tenant = serializers.CharField(
@@ -18,6 +26,7 @@ class ChatSerializer(serializers.ModelSerializer):
     # chat_owner = serializers.CharField(
     #     source='core_engine_tenant_users_app.client', default=None
     # )
+    tenant_id = TenantInfoSerializer(many=False)
     class Meta:
         model = Chat
         fields = ('chat_id', 'tenant_id', 'guest_client', 'chat_owner', 'client_satisfaction')

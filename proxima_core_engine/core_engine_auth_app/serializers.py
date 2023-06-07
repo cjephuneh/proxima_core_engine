@@ -13,7 +13,6 @@ class UserLoginSerializer(serializers.Serializer):
     password = serializers.CharField(max_length=128, write_only=True)
     token = serializers.CharField(max_length=255, read_only=True)
     user_type = serializers.CharField(max_length=255, read_only=True)
-
  
     def validate(self, data):
         # The `validate` method is where we make sure that the current
@@ -100,7 +99,6 @@ class UserLoginSerializer(serializers.Serializer):
             'email': user.email,
             'token': user.token,
             'user_type': user_type
-
         }
 
 class CheckTokenSerializer(serializers.Serializer):

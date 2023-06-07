@@ -161,13 +161,16 @@ class LikeOrDislikeCommentApiView(APIView):
 
         if is_like:
             comment.likes.remove(client_id)  # Remove the like
+            return Response({ "message": "Like removed for comment" }, status=200)
         elif is_dislike:
             comment.dislikes.remove(client_id)  # Remove the dislike
             comment.likes.add(client_id)  # Add the like
+            return Response({ "message": "Like added for comment" }, status=200)
         else:
             comment.likes.add(client_id)  # Add the like
+            return Response({ "message": "Like added for comment" }, status=200)
 
-        return Response({ "message": "Like toggled for comment" }, status=200)
+        # return Response({ "message": "Like toggled for comment" }, status=200)
 
 
 class DislikeCommentApiView(APIView):

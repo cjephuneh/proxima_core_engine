@@ -7,6 +7,10 @@ from core_engine_community_app.models import (
 from core_engine_tenant_users_app.models import (
     Client
 )
+
+from core_engine_tenant_management_app.models import (
+    Tenant
+) 
 # Comment serializers
 
 # Client serializer to serialize the likes data
@@ -27,6 +31,10 @@ class CommentSerializer(serializers.ModelSerializer):
 Community serializers
 """
 # Community serializers
+class TenantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tenant
+        fields = ['tenant_id', 'tenant_name']
 
 class MemberSerializer(serializers.ModelSerializer):
     class Meta:
@@ -38,6 +46,7 @@ class CommunitySerializer(serializers.ModelSerializer):
     #     source='core_engine_tenant_management_app.tenant', default=None
     # )
     members = MemberSerializer(many=True)  # Use the MemberSerializer for the members field
+    tenant_id = TenantSerializer(many=False)
 
     class Meta:
         model = Community
