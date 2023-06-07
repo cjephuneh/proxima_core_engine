@@ -14,7 +14,7 @@ class Survey(MetaDataBase):
                                 help_text="Display name of the tenant")
     survey_topic = models.CharField(max_length=255,
                                     help_text="The survey topic")
-    survey_description = models.CharField(max_length=20,
+    survey_description = models.CharField(max_length=200,
                                           help_text="The survey description")
     survey_context = models.CharField(max_length=20,
                                       help_text="The survey context")
