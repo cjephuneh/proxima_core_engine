@@ -14,9 +14,9 @@ class CommunicationChannels(APIView):
         if not tenant:
             return JsonResponse({'error': 'No tenant provided'}, status=status.HTTP_400_BAD_REQUEST)
 
-        mobile_count = "SELECT count(*) FROM core_engine_chat_app_Message WHERE channel ='Mobile' AND core_engine_chat_app_Message.chat_id_id IN (SELECT core_engine_chat_app_Chat.chat_id FROM core_engine_chat_app_Chat WHERE tenant_id = %s)" % tenant
+        mobile_count = "SELECT count(*) FROM core_engine_chat_app_Message WHERE channel ='Mobile' AND core_engine_chat_app_Message.chat_id_id IN (SELECT core_engine_chat_app_Chat.chat_id FROM core_engine_chat_app_Chat WHERE tenant_id_id = %s)" % tenant
 
-        website_count = "SELECT count(*) FROM core_engine_chat_app_Message WHERE channel ='Website' AND core_engine_chat_app_Message.chat_id_id IN (SELECT core_engine_chat_app_Chat.chat_id FROM core_engine_chat_app_Chat WHERE tenant_id = %s)" % tenant
+        website_count = "SELECT count(*) FROM core_engine_chat_app_Message WHERE channel ='Website' AND core_engine_chat_app_Message.chat_id_id IN (SELECT core_engine_chat_app_Chat.chat_id FROM core_engine_chat_app_Chat WHERE tenant_id_id = %s)" % tenant
 
         communication_channels = {'mobile_count': 0, 'website_count': 0}
 

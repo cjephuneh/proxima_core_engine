@@ -20,7 +20,7 @@ class MostPopularTopics(APIView):
                 SELECT topic, COUNT(*) AS topic_count
                 FROM core_engine_chat_app_message
                 INNER JOIN core_engine_chat_app_chat ON core_engine_chat_app_message.chat_id_id = core_engine_chat_app_chat.chat_id
-                WHERE core_engine_chat_app_chat.tenant_id = %s
+                WHERE core_engine_chat_app_chat.tenant_id_id = %s
                 GROUP BY topic
                 ORDER BY topic_count DESC
             """

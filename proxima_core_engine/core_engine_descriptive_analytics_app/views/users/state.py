@@ -19,7 +19,7 @@ class StateDistribution(APIView):
                 SELECT core_engine_users_profile_app_ClientProfile.county
                 FROM core_engine_chat_app_Chat
                 JOIN core_engine_users_profile_app_ClientProfile ON core_engine_chat_app_Chat.chat_owner_id = core_engine_users_profile_app_ClientProfile.client_id
-                WHERE core_engine_chat_app_Chat.tenant_id = %s
+                WHERE core_engine_chat_app_Chat.tenant_id_id = %s
             """
             cursor.execute(query, [tenant_id])
             rows = cursor.fetchall()

@@ -14,7 +14,7 @@ class ClientsAverageAge(APIView):
             return Response({"error": 'No tenant provided'}, status=status.HTTP_400_BAD_REQUEST)
         
         with connection.cursor() as cursor:
-            query = "SELECT AVG(core_engine_users_profile_app_ClientProfile.age) FROM core_engine_chat_app_Chat JOIN core_engine_users_profile_app_ClientProfile ON (core_engine_chat_app_Chat.chat_owner_id = core_engine_users_profile_app_ClientProfile.client_id) WHERE core_engine_chat_app_Chat.tenant_id = %s GROUP BY core_engine_chat_app_Chat.chat_id"
+            query = "SELECT AVG(core_engine_users_profile_app_ClientProfile.age) FROM core_engine_chat_app_Chat JOIN core_engine_users_profile_app_ClientProfile ON (core_engine_chat_app_Chat.chat_owner_id = core_engine_users_profile_app_ClientProfile.client_id) WHERE core_engine_chat_app_Chat.tenant_id_id = %s GROUP BY core_engine_chat_app_Chat.chat_id"
             cursor.execute(query, [tenant_id])
             rows = cursor.fetchall()
 

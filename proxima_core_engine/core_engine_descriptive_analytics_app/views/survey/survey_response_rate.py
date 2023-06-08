@@ -9,7 +9,7 @@ from core_engine_tenant_users_app.models import Client
 class SurveyResponseRate(APIView):
 
     def get(self, request):
-        survey_id = self.request.query_params.get('survey_id')
+        survey_id = self.request.query_params.get('survey')
 
         if not survey_id:
             return JsonResponse({'error': 'No survey ID provided'}, status=status.HTTP_400_BAD_REQUEST)
