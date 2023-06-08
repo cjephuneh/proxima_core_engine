@@ -60,6 +60,7 @@ class CoreEngineSource(Source):
         "core_engine_tenant_users_app_admin",
         "core_engine_tenant_users_app_client",
         "core_engine_tenant_users_app_employee",
+        "core_engine_users_profile_app_clientprofile",
 
     ]
     config__table_prefix = "public."
