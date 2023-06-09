@@ -8,7 +8,21 @@ from core_engine_tenant_users_app.models import (
     User, Employee, Client, Admin
 )
 
+from core_engine_tenant_management_app.models import (
+    Tenant
+)
+
+class TenantSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Tenant
+        fields = ('tenant_id', 'tenant_id', 'tenant_name')
+
 class UserLoginSerializer(serializers.Serializer):
+    id = serializers.CharField(max_length=255, read_only=True)
+    tenant_id = TenantSerializer(read_only=True)
+    username = serializers.CharField(max_length=255, read_only=True)
+    first_name = serializers.CharField(max_length=255, read_only=True)
+    last_name = serializers.CharField(max_length=255, read_only=True)
     email = serializers.CharField(max_length=255)
     password = serializers.CharField(max_length=128, write_only=True)
     token = serializers.CharField(max_length=255, read_only=True)
@@ -100,9 +114,26 @@ class UserLoginSerializer(serializers.Serializer):
         # The `validate` method should return a dictionary of validated data.
         # This is the data that is passed to the `create` and `update` methods
         # that we will see later on.
-        print(user_type)
-        #user_type = str(user_type)
+
+        if user_type == 'admin':
+            tenant_serializer = TenantSerializer(userObj.tenant_id)  # Serialize the tenant_id data
+            return {
+                'id': user.id,
+                'tenant_id': tenant_serializer.data,
+                'username': user.username,
+                'first_name': user.first_name,
+                'last_name': user.last_name,
+                'email': user.email,
+                'token': user.token,
+                'user_type': user_type
+            }
+
         return {
+            'id': user.id,
+            # 'tenant_id': user.tenant_id,
+            'username': user.username,
+            'first_name': user.first_name,
+            'last_name': user.last_name,
             'email': user.email,
             'token': user.token,
             'user_type': user_type
