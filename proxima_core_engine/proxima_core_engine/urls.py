@@ -51,10 +51,10 @@ urlpatterns = [
     path("", include(("core_engine_survey_app.urls", "core_engine_survey_app"), namespace="survey_urls")), 
     path("", include(("core_engine_users_profile_app.urls", "core_engine_users_profile_app"), namespace="profiles_urls")), 
     path("", include("core_engine_descriptive_analytics_app.urls", namespace="analytics_urls")),
-    # path("", include("core_engine_payments_app.urls", namespace="payments_urls")),
+    path("", include("core_engine_social_intergtaions.urls", namespace="social_intergrations_urls")),
     path("", include("core_engine_reports_app.urls", namespace="reports_urls")),
     # path("api/", include("core_engine_subscriptions_app.urls", namespace="subscriptions_urls")),
-    path("", include(("core_engine_tenant_management_app.urls", "core_engine_tenant_management_app"), namespace="tenant_urls")),
+    path("", include(("core_engine_tenant_management_app.urls", "core_engine_tenant_management_app"), namespace="tenant_urls")),  
     path('auth/', include('dj_rest_auth.urls')),
 ]
 

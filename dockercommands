@@ -13,6 +13,12 @@ docker rm -f $(docker ps -qa)
 docker rmi -f $(docker images -aq)
 docker-compose -f docker-compose.prod.yml exec web python manage.py
 docker-compose -f docker-compose.prod.yml exec web python manage.py makemigrations
+sudo docker-compose exec search_engine_web pip install -r private-local.txt
+
+
+sudo docker-compose exec web pip install -r private-local.txt
+
+docker-compose  exec web python manage.py makemigrations
 
 docker-compose exec web python manage.py makemigrations
 

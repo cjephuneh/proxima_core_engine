@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     # 'core_engine_payments_app',
     'core_engine_community_app',
     'core_engine_survey_app',
+    'core_engine_social_intergtaions',
     # Installed apps
     'django_celery_results',
     'django_celery_beat',
@@ -59,8 +60,8 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_swagger',
     # 'dj_rest_auth',
-    'rest_framework.authtoken',
-
+    'rest_framework.authtoken'
+    
 ]
 
 MIDDLEWARE = [
