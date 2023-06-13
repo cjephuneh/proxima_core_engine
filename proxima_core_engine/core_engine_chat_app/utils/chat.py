@@ -37,7 +37,7 @@ def save_tenant_client_chat(**kwargs):
     chat = None
     try:
         tenant_id = kwargs.get('tenant_id')
-        guest_client_id = kwargs.get('guest_client')
+        # guest_client_id = kwargs.get('guest_client')
         chat_owner_id = kwargs.get('chat_owner')
         client_satisfaction = kwargs.get('client_satisfaction')
         
@@ -47,11 +47,11 @@ def save_tenant_client_chat(**kwargs):
             log.error("Invalid tenant_id: %s", tenant_id)
             return None, False
         
-        try:
-            guest_client = Client.objects.get(id=guest_client_id)
-        except Client.DoesNotExist:
-            log.error("Invalid guest_client id: %s", guest_client_id)
-            return None, False
+        # try:
+        #     guest_client = Client.objects.get(id=guest_client_id)
+        # except Client.DoesNotExist:
+        #     log.error("Invalid guest_client id: %s", guest_client_id)
+        #     return None, False
         
         try:
             chat_owner = Client.objects.get(id=chat_owner_id)
@@ -61,16 +61,20 @@ def save_tenant_client_chat(**kwargs):
         
         chat, created = Chat.objects.get_or_create(
             tenant_id=tenant,
-            guest_client=guest_client,
+            # guest_client=guest_client,
             chat_owner=chat_owner,
             client_satisfaction=client_satisfaction
         )
         
         chat.save()
     except (IntegrityError, DatabaseError):
+        # log.error(
+        #     "Chat save error: (Chat tenant: %s, Chat guest_client: %s, Chat chat_owner: %s)",
+        #     tenant_id, guest_client_id, chat_owner_id
+        # )
         log.error(
-            "Chat save error: (Chat tenant: %s, Chat guest_client: %s, Chat chat_owner: %s)",
-            tenant_id, guest_client_id, chat_owner_id
+            "Chat save error: (Chat tenant: %s, Chat chat_owner: %s)",
+            tenant_id, chat_owner_id
         )
         return None, False
     

@@ -5,6 +5,10 @@ from core_engine_chat_app.models import (
     Chat, ClientChats, Message, TenantChats
 )
 
+from core_engine_tenant_users_app.models import (
+    Client
+)
+
 from core_engine_tenant_management_app.models import (
     Tenant
 )
@@ -14,6 +18,11 @@ class TenantInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tenant
         fields = ['tenant_id', 'tenant_name']
+
+class ClientInfoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Client
+        fields = ['id', 'username', 'email', 'first_name', 'last_name']
 
 
 class ChatSerializer(serializers.ModelSerializer):
@@ -27,6 +36,8 @@ class ChatSerializer(serializers.ModelSerializer):
     #     source='core_engine_tenant_users_app.client', default=None
     # )
     tenant_id = TenantInfoSerializer(many=False)
+    chat_owner = ClientInfoSerializer(many=False)
+    guest_client = ClientInfoSerializer(many=False)
     class Meta:
         model = Chat
         fields = ('chat_id', 'tenant_id', 'guest_client', 'chat_owner', 'client_satisfaction')
