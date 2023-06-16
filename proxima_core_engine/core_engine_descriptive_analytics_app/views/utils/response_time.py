@@ -24,7 +24,7 @@ class AverageResponseTime(APIView):
                   AND chat_id_id IN (
                       SELECT chat_id 
                       FROM core_engine_chat_app_chat 
-                      WHERE tenant_id = %s
+                      WHERE tenant_id_id = %s
                   ) 
             GROUP BY chat_id_id
             """ % tenant
@@ -57,7 +57,7 @@ class HourlyAverageResponseTime(APIView):
                   AND chat_id_id IN (
                       SELECT chat_id 
                       FROM core_engine_chat_app_chat 
-                      WHERE tenant_id = %s
+                      WHERE tenant_id_id = %s
                   ) 
             GROUP BY chat_id_id
             """ % tenant

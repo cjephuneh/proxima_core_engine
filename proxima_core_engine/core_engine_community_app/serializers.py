@@ -176,3 +176,9 @@ class ThreadSerializer(serializers.ModelSerializer):
             'thread_id', 'issue'
         )
         depth = 1
+
+class ClientSerializer(serializers.ModelSerializer):
+    favorites = CommunitySerializer(many=True)
+    class Meta:
+        model = Client
+        fields = ['id', 'username', 'email', 'first_name', 'last_name', 'favorites']

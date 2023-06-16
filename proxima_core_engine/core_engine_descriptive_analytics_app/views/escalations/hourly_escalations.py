@@ -20,7 +20,7 @@ class CountHourlyEscalatedIssues(APIView):
                     AND core_engine_chat_app_Message.chat_id_id IN (
                         SELECT core_engine_chat_app_Chat.chat_id
                         FROM core_engine_chat_app_Chat
-                        WHERE tenant_id = %s
+                        WHERE tenant_id_id = %s
                     )
             """
             cursor.execute(query, [tenant])

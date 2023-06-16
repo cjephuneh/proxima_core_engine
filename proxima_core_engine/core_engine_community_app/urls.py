@@ -3,7 +3,7 @@ from django.urls import include, path, re_path
 from core_engine_auth_app.views.signin import LoginAPIView
 from core_engine_community_app.views import (
     CommunityView, ThreadView, IssueView, CommentView, JoinCommunityView, LeaveCommunityView,
-    LikeCommentApiView, DislikeCommentApiView, LikeOrDislikeCommentApiView,
+    LikeCommentApiView, DislikeCommentApiView, LikeOrDislikeCommentApiView, FavoriteCommunitiesView
 )
 
 app_name="core_engine_community_app"
@@ -22,5 +22,6 @@ urlpatterns = [
         # re_path(r'^likecomment/$', LikeCommentApiView.as_view(), name='core_community_like_comment'),
         # re_path(r'^dislikecomment/$', DislikeCommentApiView.as_view(), name='core_community_dislikecomment'),
         re_path(r'^likeordislikecomment/$', LikeOrDislikeCommentApiView.as_view(), name='core_community_like_comment'),
+        re_path(r'^favoritecommunities/$', FavoriteCommunitiesView.as_view(), name='core_community_favorite_communities')
     ]))
 ]

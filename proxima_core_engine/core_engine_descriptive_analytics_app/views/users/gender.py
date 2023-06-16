@@ -20,7 +20,7 @@ class GenderDistribution(APIView):
                         core_engine_chat_app_Chat.chat_owner_id = \
                         core_engine_users_profile_app_ClientProfile.client_id \
                      INNER JOIN core_engine_tenant_management_app_Tenant ON \
-                        core_engine_chat_app_Chat.tenant_id = \
+                        core_engine_chat_app_Chat.tenant_id_id = \
                         core_engine_tenant_management_app_Tenant.tenant_id \
                      WHERE core_engine_tenant_management_app_Tenant.tenant_id = %s"
             cursor.execute(query, [tenant_id])

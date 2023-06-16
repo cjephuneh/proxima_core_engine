@@ -11,6 +11,10 @@ from django.contrib.auth.models import (
 from django.contrib.auth.models import (
     BaseUserManager
 )
+
+# from core_engine_community_app.models import (
+#     Community
+# )
 # Create your models here.
 
 """
@@ -44,6 +48,8 @@ class Client(User, PermissionsMixin):
     REQUIRED_FIELDS = ['username', 'email', 'first_name', 'last_name','phonenumber', 'gender','DOB', 'user_type' ]
 
     objects = ClientManager()
+
+    favorites = models.ManyToManyField('core_engine_community_app.Community')  # Many-to-many relationship with the Community model
 
     def __str__(self):
         return str(self.username)  

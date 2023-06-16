@@ -6,7 +6,7 @@ from rest_framework.views import APIView
 from rest_framework import status
 from core_engine_community_app.models import Community
 from core_engine_community_app.serializers import (
-    CommunitySerializer, JoinCommunitySerializer, LeaveCommunitySerializer
+    CommunitySerializer, JoinCommunitySerializer, LeaveCommunitySerializer, ClientSerializer
 )
 from core_engine_community_app.utils import save_tenant_community
 from core_engine_utils_app.views import get_filter_from_params
@@ -108,6 +108,57 @@ class LeaveCommunityView(APIView):
             response = { 'error': False, 'data': serializer.data }
             
             return Response(response, status=status.HTTP_201_CREATED)
-        
+    
+class FavoriteCommunitiesView(APIView):
+    def get(self, request, *args, **kwargs):
+        client_id = request.query_params.get('client_id')
+
+        try:
+            client = Client.objects.get(id=client_id)
+        except Client.DoesNotExist:
+            return Response({'error': 'Client not found'}, status=400)
+
+        favorites = client.favorites.all()
+        serializer = CommunitySerializer(favorites, many=True)
+
+        return Response(serializer.data, status=200)
+    
+    # def post(self, request, *args, **kwargs):
+    #     client_id = request.data.get('client_id')
+    #     community_id = request.data.get('community_id')
+
+    #     try:
+    #         client = Client.objects.get(id=client_id)
+    #     except Client.DoesNotExist:
+    #         return Response({'error': 'Client not found'}, status=400)
+
+    #     client.favorites.add(community_id)
+    #     serializer = ClientSerializer(client)
+    #     return Response(serializer.data, status=200) 
+
+    # handle adding and removing from favorites list
+    def post(self, request, *args, **kwargs):
+        client_id = request.data.get('client_id')
+        community_id = request.data.get('community_id')
+
+        try:
+            client = Client.objects.get(id=client_id)
+        except Client.DoesNotExist:
+            return Response({'error': 'Client not found'}, status=status.HTTP_400_BAD_REQUEST)
+
+        existing_favorites = client.favorites.filter(community_id=community_id)
+        if existing_favorites.exists():
+            client.favorites.remove(community_id)
+            client.save()
+            return Response({'message': 'Community removed from favorites'}, status=status.HTTP_200_OK)
+
+        try:
+            client.favorites.add(community_id)
+            client.save()
+        except Exception as e:
+            return Response({'error': 'Failed to add/remove community from favorites'}, status=status.HTTP_400_BAD_REQUEST)
+
+        return Response({'message': 'Community added to favorites'}, status=status.HTTP_200_OK)
+
 
 

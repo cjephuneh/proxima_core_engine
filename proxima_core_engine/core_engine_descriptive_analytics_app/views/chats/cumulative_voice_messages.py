@@ -19,7 +19,7 @@ class CumulativeVoiceMessages(APIView):
                 FROM core_engine_chat_app_Message 
                 INNER JOIN core_engine_chat_app_Chat 
                 ON core_engine_chat_app_Message.chat_id_id = core_engine_chat_app_Chat.chat_id 
-                WHERE core_engine_chat_app_Chat.tenant_id = %s 
+                WHERE core_engine_chat_app_Chat.tenant_id_id = %s 
             """
             cursor.execute(query, [tenant_id])
             row = cursor.fetchone()

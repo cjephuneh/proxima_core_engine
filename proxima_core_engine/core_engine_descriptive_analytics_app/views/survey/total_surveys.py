@@ -9,7 +9,7 @@ from core_engine_survey_app.models import Survey
 class TotalSurveys(APIView):
 
     def get(self, request):
-        tenant_id = self.request.query_params.get('tenant_id')
+        tenant_id = self.request.query_params.get('tenant')
 
         if not tenant_id:
             return JsonResponse({'error': 'No Tenant provided'}, status=status.HTTP_400_BAD_REQUEST)
