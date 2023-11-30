@@ -80,6 +80,8 @@ MIDDLEWARE = [
 ROOT_URLCONF = 'proxima_core_engine.urls'
 CORS_ALLOWED_ORIGINS = [
     'http://localhost:3000',
+    'http://localhost:3001',
+
 ]
 TEMPLATES = [
     {
